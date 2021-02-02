@@ -1,40 +1,22 @@
-import React, {useEffect} from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './Components/PrivateRoute';
-import { getPokemon, onInputChange, searchPokemon } from './actions/index';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme/index';
 
 import LoginForm from './Components/LoginForm';
 import ProfileForm from './Components/ProfileForm';
 import OwnerForm from './Components/OwnerForm';
 import RenterForm from './Components/RenterForm';
-// import axios from 'axios';
+
 
 import './App.css';
 
-function App({getPokemon, onInputChange, userInput, searchPokemon}) {
-
-
-
-  const handleSubmit = e => {
-      e.preventDefault();
-      searchPokemon(userInput);
-    }
-
-  useEffect(() => {
-    getPokemon()
-    }, [getPokemon])
-  
+function App() {
   return (
+    <ThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <h1>Working</h1>
-          <form onSubmit={handleSubmit}>
-            <label>Search:
-              <input onChange={onInputChange} value={userInput} />
-            </label>
-            <button>Find</button>
-          </form>
         <Switch>
           <Route exact path="/" component={LoginForm} />
           <Route exact path="/createNewUser" component={ProfileForm} />
@@ -43,18 +25,11 @@ function App({getPokemon, onInputChange, userInput, searchPokemon}) {
         </Switch>
         </div>
       </Router>
+      </ThemeProvider>
   );
 }
-const mapStateToProps = state => {
-  return{
-    error: state.error,
-    isFetching: state.isFetching,
-    pokemonImages: state.pokemonImages,
-    searchPokemon: state.searchPokemon,
-    userInput: state.userInput,
-  }
-}
-export default connect(mapStateToProps, {getPokemon, onInputChange, searchPokemon})(App);
+
+export default App;
 
 
   // const [pokemonList, setPokemonList] = useState([]);

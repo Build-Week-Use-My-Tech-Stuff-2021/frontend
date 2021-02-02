@@ -1,24 +1,45 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
+import { getPokemon, onInputChange, searchPokemon } from '../actions/index';
 
-const OwnerForm = ({pokemonImages}) => {
-    console.log(pokemonImages)
-    const renderedPokemon = pokemonImages.map((image) => {
-        return(
-            <h1>Name:{image.name}</h1>
-        )
-    })
-    return(
-        <div>
-            {renderedPokemon ? renderedPokemon : ''}
-        </div>
-    )
-    
-}
+// import styled from 'styled-components';
+import OwnerList from './OwnerList';
 
-const mapStateToProps = state => {
-    return {
-        pokemonImages: state.pokemonImages,
+
+
+function OwnerForm({getPokemon, onInputChange, userInput, searchPokemon}) {
+
+  const handleSubmit = e => {
+      e.preventDefault();
+      searchPokemon(userInput);
     }
+
+  useEffect(() => {
+    getPokemon()
+    }, [getPokemon])
+  
+  return (
+    <React.Fragment>
+        <div className="App">
+          <h1>Working</h1>
+          <form onSubmit={handleSubmit}>
+            <label>Search:
+              <input onChange={onInputChange} value={userInput} />
+            </label>
+            <button>Find</button>
+          </form>
+        </div>  
+         <OwnerList /> 
+         </React.Fragment>
+  );
 }
-export default connect(mapStateToProps, {})(OwnerForm);
+const mapStateToProps = state => {
+  return{
+    error: state.error,
+    isFetching: state.isFetching,
+    pokemonImages: state.pokemonImages,
+    searchPokemon: state.searchPokemon,
+    userInput: state.userInput,
+  }
+}
+export default connect(mapStateToProps, {getPokemon, onInputChange, searchPokemon})(OwnerForm);

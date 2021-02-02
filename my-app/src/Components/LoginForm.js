@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as yup from "yup";
@@ -22,6 +23,7 @@ export default function LoginForm(props) {
     history.push("/createNewUser");
   };
 
+
   const onLoginChange = (evt) => {
     /* potentially need to put checkboxes for user role options */
     const { userName, value } = evt.target;
@@ -29,20 +31,7 @@ export default function LoginForm(props) {
     change(userName, valueToUse);
   };
 
-  // //posting login
-  // const postLoginInfo = (loginInfo) => {
-  //   axios
-  //     .post("", loginInfo)
-  //     .then((res) => {
-  //       setLoginValues(res.data);
-  //       console.log(loginInfo);
-  //     })
-  //     .catch((error) => {
-  //       console.log("there was an error ", error);
-  //     });
-  // };
 
-  //validation useEffect
   const onChange = (userName, value) => {
     yup
       .reach(FormSchema, userName)
@@ -59,6 +48,7 @@ export default function LoginForm(props) {
           [userName]: error.errors[0],
         });
       });
+
 
     setLoginValues({
       ...loginValues,
@@ -124,3 +114,4 @@ export default function LoginForm(props) {
     </div>
   );
 }
+

@@ -41,11 +41,11 @@ export default function LoginForm() {
         });
       });
 
-    setLoginValues({
-      ...LoginValues,
-      [name]: value,
-    });
-  };
+//     setLoginValues({
+//       ...LoginValues,
+//       [name]: value,
+//     });
+//   };
 
   useEffect(() => {
     FormSchema.isValid(formValues).then((valid) => {
@@ -100,3 +100,4 @@ export default function LoginForm() {
     </div>
   );
 }
+export default LoginForm

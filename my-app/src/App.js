@@ -5,9 +5,11 @@ import { ThemeProvider } from 'styled-components';
 import theme from './theme/index';
 
 import LoginForm from './Components/LoginForm';
-import ProfileForm from './Components/ProfileForm';
+import NewUserProfileForm from './Components/NewUserProfileForm';
 import OwnerForm from './Components/OwnerForm';
 import RenterForm from './Components/RenterForm';
+import AddTechProduct from './Components/AddTechProduct';
+import LogOut from './Components/LogOut';
 
 
 import './App.css';
@@ -19,9 +21,11 @@ function App() {
         <div className="App">
         <Switch>
           <Route exact path="/" component={LoginForm} />
-          <Route exact path="/createNewUser" component={ProfileForm} />
+          <Route exact path="/createNewUser" component={NewUserProfileForm} />
           <PrivateRoute exact path="/owner" component={OwnerForm} />
           <PrivateRoute exact path="/renter" component={RenterForm} />
+          <PrivateRoute exact path="/addProduct" component={AddTechProduct} />
+          <PrivateRoute exact path="/logout" component={LogOut} />
         </Switch>
         </div>
       </Router>

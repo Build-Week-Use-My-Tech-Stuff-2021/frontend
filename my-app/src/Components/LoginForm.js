@@ -2,56 +2,75 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
+import { useHistory } from "react-router-dom";
 
-export default function LoginForm() {
-  const { values, changes, submit, errors, disabled } = props;
+export default function LoginForm(props) {
+  const { value, change, submit, errors } = props;
 
+  const initialDisabled = true;
   const [loginValues, setLoginValues] = useState("");
-  const [formErrors, setFormErrors] = useState(initialFormErrors);
+  const [formErrors, setFormErrors] = useState("");
   const [disabled, setButtonDisabled] = useState(initialDisabled);
 
-  //posting login
-  const postLoginInfo = (loginInfo) => {
-    axios
-      .post("", loginInfo)
-      .then((res) => {
-        setLoginValues(res.data);
-        console.log(loginInfo);
-      })
-      .catch((error) => {
-        console.log("there was an error ", error);
-      });
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    submit();
   };
 
+  const history = useHistory();
+  const createNew = (e) => {
+    history.push("/createNewUser");
+  };
+
+  const onLoginChange = (evt) => {
+    /* potentially need to put checkboxes for user role options */
+    const { userName, value } = evt.target;
+    const valueToUse = value;
+    change(userName, valueToUse);
+  };
+
+  // //posting login
+  // const postLoginInfo = (loginInfo) => {
+  //   axios
+  //     .post("", loginInfo)
+  //     .then((res) => {
+  //       setLoginValues(res.data);
+  //       console.log(loginInfo);
+  //     })
+  //     .catch((error) => {
+  //       console.log("there was an error ", error);
+  //     });
+  // };
+
   //validation useEffect
-  const inputChange = (name, value) => {
+  const onChange = (userName, value) => {
     yup
-      .reach(FormSchema, name)
+      .reach(FormSchema, userName)
       .validate(value)
       .then(() => {
         setFormErrors({
           ...formErrors,
-          [name]: "",
+          [userName]: "",
         });
       })
       .catch((error) => {
         setFormErrors({
           ...formErrors,
-          [name]: error.errors[0],
+          [userName]: error.errors[0],
         });
       });
 
-//     setLoginValues({
-//       ...LoginValues,
-//       [name]: value,
-//     });
-//   };
+    setLoginValues({
+      ...loginValues,
+      [userName]: value,
+    });
+  };
 
   useEffect(() => {
-    FormSchema.isValid(formValues).then((valid) => {
+    FormSchema.isValid(loginValues).then((valid) => {
       setButtonDisabled(!valid);
     });
-  }, [formValues]);
+  }, [loginValues]);
 
   return (
     <div>
@@ -97,7 +116,11 @@ export default function LoginForm() {
           </select>
         </label>
       </form>
+      <div>
+        <button name="create new user button" onClick={createNew}>
+          Create New User
+        </button>
+      </div>
     </div>
   );
 }
-export default LoginForm

@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
 
-const initialProfileFormValues = {
+const initialNewUserFormValues = {
   firstName: "",
   lastName: "",
   username: "",
@@ -11,7 +11,7 @@ const initialProfileFormValues = {
   email: "",
   userRole: "",
 };
-const initialProfileFormErrors = {
+const initialNewUserFormErrors = {
   firstName: "",
   lastName: "",
   username: "",
@@ -21,17 +21,13 @@ const initialProfileFormErrors = {
 };
 
 constInitialDisabled = true;
-const initialNewUserProfileInfo = {};
+const initialNewUserInfo = {};
 
-export default function NewUserProfileForm(props) {
+export default function NewUserForm(props) {
   const { values, submit, change, errors, disabled } = props;
 
-  const [newUserProfileInfo, setNewUserProfileInfo] = useState(
-    initialNewUserProfileInfo
-  );
-  const [newUserProfileFormValues, setNewUserProfileFormValues] = useState(
-    initialProfileFormValues
-  );
+  const [newUserInfo, setNewUserInfo] = useState(initialNewUserInfo);
+  const [newUserFormValues, setNewUserFormValues] = useState(initialFormValues);
   const [newUserFormErrors, setNewUserFormErrors] = useState(
     initialNewUserFormErrors
   );
@@ -41,9 +37,9 @@ export default function NewUserProfileForm(props) {
     axios
       .post("", newUserInfo)
       .then((res) => {
-        setNewUserProfileInfo(res.data);
-        setNewUserProfileFormValues(initialProfileFormValues);
-        console.log(profileInfo);
+        setNewUserInfo(res.data);
+        setNewUserFormValues(initialFormValues);
+        console.log(newUserInfo);
       })
       .catch((error) => {
         console.log("there was an error ", error);
@@ -62,15 +58,15 @@ export default function NewUserProfileForm(props) {
     change(name, valueToUse);
   };
 
-  const userSubmit = () => {
+  const newUserSubmit = () => {
     const newProfile = {
-      firstName: newUserProfileFormValues.firstName.trim(),
-      lastName: newUserProfileFormValues.lastName.trim(),
-      username: newUserProfileFormValues.username.trim(),
-      password: newUserProfileFormValues.password.trim(),
-      userRole: newUserProfileFormValues.userRole,
+      firstName: newUserFormValues.firstName.trim(),
+      lastName: newUserFormValues.lastName.trim(),
+      username: newUserFormValues.username.trim(),
+      password: newUserFormValues.password.trim(),
+      userRole: newUserFormValues.userRole,
     };
-    postNewUserProfileInfo(newUserProfileInfo);
+    postNewUserInfo(newUserInfo);
   };
 
   //validation useEffect
@@ -91,8 +87,8 @@ export default function NewUserProfileForm(props) {
         });
       });
 
-    setNewUserProfileFormValues({
-      ...NewUserProfileFormValues,
+    setNewUserFormValues({
+      ...NewUserFormValues,
       [firstName]: value,
     });
   };

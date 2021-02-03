@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 const history = useHistory();
 const routeToHome = () => {
-  history.pushState("/");
+  history.push("/");
 };
 export default function RequestReceived() {
   return (

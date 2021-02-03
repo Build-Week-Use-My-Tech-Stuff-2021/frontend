@@ -1,9 +1,8 @@
-
-
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
+import axios from "axios";
 
 const initialNewUserFormValues = {
   firstName: "",
@@ -22,26 +21,29 @@ const initialNewUserFormErrors = {
   userRole: "",
 };
 
-constInitialDisabled = true;
-const initialNewUserInfo = {};
+const initialNewUserDisabled = true;
 
-export default function NewUserForm(props) {
-  const { values, submit, change, errors, disabled } = props;
-
-  const [newUserInfo, setNewUserInfo] = useState(initialNewUserInfo);
-  const [newUserFormValues, setNewUserFormValues] = useState(initialFormValues);
+export default function NewUserForm() {
+  const [newUserFormValues, setNewUserFormValues] = useState(
+    initialNewUserFormValues
+  );
   const [newUserFormErrors, setNewUserFormErrors] = useState(
     initialNewUserFormErrors
   );
-  const [disabled, setButtonDisabled] = useState(initialDisabled);
+  const [newUserDisabled, setNewUserButtonDisabled] = useState(
+    initialNewUserDisabled
+  );
+
+  const history = useHistory();
+  const newUserRouteToHome = () => {
+    history.push("/");
+  };
 
   const postNewUserInfo = (newUserInfo) => {
     axios
       .post("", newUserInfo)
       .then((res) => {
-        setNewUserInfo(res.data);
-        setNewUserFormValues(initialFormValues);
-        console.log(newUserInfo);
+        setNewUserFormValues(initialNewUserFormValues);
       })
       .catch((error) => {
         console.log("there was an error ", error);
@@ -50,14 +52,8 @@ export default function NewUserForm(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    submit();
-  };
-
-  const onChange = (evt) => {
-    /* potentially need to put checkboxes for user role options */
-    const { name, value } = evt.target;
-    const valueToUse = value;
-    change(name, valueToUse);
+    newUserSubmit();
+    newUserRouteToHome();
   };
 
   const newUserSubmit = () => {
@@ -68,53 +64,54 @@ export default function NewUserForm(props) {
       password: newUserFormValues.password.trim(),
       userRole: newUserFormValues.userRole,
     };
-    postNewUserInfo(newUserInfo);
+    postNewUserInfo(newProfile);
   };
 
   //validation useEffect
-  const inputChange = (firstName, value) => {
+  const inputChange = (event) => {
+    const { name, value } = event;
     yup
-      .reach(FormSchema, firstName)
+      .reach(FormSchema, name)
       .validate(value)
       .then(() => {
         setNewUserFormErrors({
-          ...NewUserFormErrors,
-          [firstName]: "",
+          ...newUserFormErrors,
+          [name]: "",
         });
       })
       .catch((error) => {
         setNewUserFormErrors({
-          ...NewUserFormErrors,
-          [firstName]: error.errors[0],
+          ...newUserFormErrors,
+          [name]: error.errors[0],
         });
       });
 
     setNewUserFormValues({
-      ...NewUserFormValues,
-      [firstName]: value,
+      ...newUserFormValues,
+      [name]: value,
     });
   };
 
   useEffect(() => {
-    FormSchema.isValid(formValues).then((valid) => {
-      setButtonDisabled(!valid);
+    FormSchema.isValid(newUserFormValues).then((valid) => {
+      setNewUserButtonDisabled(!valid);
     });
-  }, [formValues]);
+  }, [newUserFormValues]);
 
   return (
-    <form className="new user form container" onSubmit={onSubmit}>
+    <form
+      className="new user form container"
+      disabled={newUserDisabled}
+      onSubmit={onSubmit}
+    >
       <div className="new user form submit">
         <h2>New Profile</h2>
         <p>Please fill out the information below</p>
 
         {/*DISABLE BUTTON */}
-        <button name="submit new user" disabled={disabled}>
+        <button name="submit new user" disabled={newUserDisabled}>
           Create Profile
         </button>
-
-        <div className="errors">
-          <div>{errors.name}</div>
-        </div>
       </div>
 
       <div className="form inputs">
@@ -123,8 +120,8 @@ export default function NewUserForm(props) {
         <label>
           First Name
           <input
-            value={values.firstName}
-            onChange={onChange}
+            value={newUserFormValues.firstName}
+            onChange={inputChange}
             name="first name"
             type="text"
           />
@@ -133,8 +130,8 @@ export default function NewUserForm(props) {
         <label>
           Last Name
           <input
-            value={values.lastName}
-            onChange={onChange}
+            value={newUserFormValues.lastName}
+            onChange={inputChange}
             name="last name"
             type="text"
           />
@@ -142,7 +139,11 @@ export default function NewUserForm(props) {
 
         <label>
           Role
-          <select onChange={onChange} value={values.size} name="size">
+          <select
+            onChange={inputChange}
+            value={newUserFormValues.role}
+            name="role"
+          >
             <option value="">- Select an option -</option>
             <option value="owner">
               Owner - I want to make my equipment available to rent
@@ -158,8 +159,8 @@ export default function NewUserForm(props) {
           <input
             type="text"
             name="username"
-            checked={values.username}
-            onChange={onChange}
+            value={newUserFormValues.username}
+            onChange={inputChange}
           />
         </label>
 
@@ -168,8 +169,8 @@ export default function NewUserForm(props) {
           <input
             type="text"
             name="password"
-            checked={values.password}
-            onChange={onChange}
+            value={newUserFormValues.password}
+            onChange={inputChange}
           />
         </label>
 
@@ -178,13 +179,11 @@ export default function NewUserForm(props) {
           <input
             type="text"
             name="email"
-            checked={values.email}
-            onChange={onChange}
+            value={newUserFormValues.email}
+            onChange={inputChange}
           />
         </label>
       </div>
     </form>
   );
-
 }
-

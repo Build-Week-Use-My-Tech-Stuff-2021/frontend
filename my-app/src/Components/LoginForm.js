@@ -1,12 +1,10 @@
-
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
 import { useHistory } from "react-router-dom";
 
 export default function LoginForm(props) {
-  const { value, change, submit, errors } = props;
+  const { errors } = props;
 
   const initialDisabled = true;
   const [loginValues, setLoginValues] = useState("");
@@ -15,7 +13,9 @@ export default function LoginForm(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    submit();
+    loginValues.role === "owner"
+      ? history.push("/owner")
+      : history.push("/renter");
   };
 
   const history = useHistory();
@@ -23,36 +23,26 @@ export default function LoginForm(props) {
     history.push("/createNewUser");
   };
 
-
-  const onLoginChange = (evt) => {
-    /* potentially need to put checkboxes for user role options */
-    const { userName, value } = evt.target;
-    const valueToUse = value;
-    change(userName, valueToUse);
-  };
-
-
-  const onChange = (userName, value) => {
+  const onChange = (name, value) => {
     yup
-      .reach(FormSchema, userName)
+      .reach(FormSchema, name)
       .validate(value)
       .then(() => {
         setFormErrors({
           ...formErrors,
-          [userName]: "",
+          [name]: "",
         });
       })
       .catch((error) => {
         setFormErrors({
           ...formErrors,
-          [userName]: error.errors[0],
+          [name]: error.errors[0],
         });
       });
 
-
     setLoginValues({
       ...loginValues,
-      [userName]: value,
+      [name]: value,
     });
   };
 
@@ -75,36 +65,39 @@ export default function LoginForm(props) {
           </button>
 
           <div className="errors">
-            <div>{errors.name}</div>
+            <div>{errors}</div>
           </div>
         </div>
-        <label className="username input">
-          <input
-            name="username"
-            type="text"
-            value={loginValues.userName}
-            onChange={onChange}
-          />
+        <label for="username" className="username input">
+          Username
         </label>
-        <label className="password input">
-          <input
-            name="password"
-            type="text"
-            value={loginValues.password}
-            onChange={onChange}
-          />
+        <input
+          name="username"
+          type="text"
+          value={loginValues.userName}
+          onChange={onChange}
+        />
+
+        <label for="password" className="password input">
+          Password{" "}
         </label>
-        <label className="user role">
-          <select>
-            <option value="">Select an option</option>
-            <option value="owner role">
-              I want to make my equipment available to rent
-            </option>
-            <option value="renter role">
-              I want to find equipment to rent
-            </option>
-          </select>
+        <input
+          name="password"
+          type="text"
+          value={loginValues.password}
+          onChange={onChange}
+        />
+
+        <label for="role" className="user role">
+          Select role
         </label>
+        <select name="role">
+          <option value="">Select an option</option>
+          <option value="owner">
+            I want to make my equipment available to rent
+          </option>
+          <option value="renter">I want to find equipment to rent</option>
+        </select>
       </form>
       <div>
         <button name="create new user button" onClick={createNew}>
@@ -114,4 +107,3 @@ export default function LoginForm(props) {
     </div>
   );
 }
-

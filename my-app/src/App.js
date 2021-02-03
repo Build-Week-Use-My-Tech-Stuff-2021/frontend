@@ -10,8 +10,7 @@ import OwnerForm from './Components/OwnerForm';
 import RenterForm from './Components/RenterForm';
 import AddTechProduct from './Components/AddTechProduct';
 import LogOut from './Components/LogOut';
-
-
+import RequestReceived from './Components/RequestReceived';
 import './App.css';
 
 function App() {
@@ -19,40 +18,20 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <div className="App">
-        <Switch>
-          <Route exact path="/" component={LoginForm} />
-          <Route exact path="/createNewUser" component={NewUserProfileForm} />
-          <PrivateRoute exact path="/owner" component={OwnerForm} />
-          <PrivateRoute exact path="/renter" component={RenterForm} />
-          <PrivateRoute exact path="/addProduct" component={AddTechProduct} />
-          <PrivateRoute exact path="/logout" component={LogOut} />
-        </Switch>
+          <Switch>
+            <Route exact path="/" component={LoginForm} />
+            <Route exact path="/createNewUser" component={NewUserProfileForm} />
+            <Route exact path="/owner" component={OwnerForm} />
+            <Route exact path="/renter" component={RenterForm} />
+            <PrivateRoute exact path="/addProduct" component={AddTechProduct} />
+            <PrivateRoute exact path="/logout" component={LogOut} />
+            <PrivateRoute exact path="/requestItem" component={RequestReceived} />
+          </Switch>
         </div>
       </Router>
-      </ThemeProvider>
+    </ThemeProvider>
   );
 }
 
 export default App;
 
-
-  // const [pokemonList, setPokemonList] = useState([]);
-
-  // const getPokemonList = () => {
-  //   axios
-  //     .get('https://pokeapi.co/api/v2/pokemon/1')
-  //     .then(res => {
-  //       console.log(res)
-  //       setPokemonList(res.data.abilities.ability)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-  // useEffect(() => {
-  //   getPokemonList();
-  // }, []);
- // const handleSubmit = e => {
-  //   e.preventDefault();
-  //   getPokemon(userInput);
-  // }

@@ -2,19 +2,19 @@ import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getPokemon, onInputChange, searchPokemon } from '../actions/index';
-import {axiosWithAuth} from '../helpers/axiosWithAuth'
+import { axiosWithAuth } from '../helpers/axiosWithAuth'
 import styled from 'styled-components';
-import OwnerList from './OwnerList';
+import RenterList from './RenterList';
 
 const AppDiv = styled.div`
-  
       &{
         display: flex;
         justify-content: center;
-        /* align-items: center; */
+        align-items: center; 
         flex-direction: column;
+        flex-wrap: wrap;
         background: pink;
-        
+        margin: 0;
       }
       .App{
         display: flex;
@@ -23,7 +23,6 @@ const AppDiv = styled.div`
         flex-direction: column;
         text-align: center;
         background: blue;
-
       }
       .App>*{
         margin: 1%;
@@ -41,20 +40,17 @@ const AppDiv = styled.div`
       }
 `
 const ItemsDiv = styled.div`
-.items{
-  width: 100%;
+  width: 20%;
+  margin: 1%;
+  padding: 1%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-around; 
   flex-direction: row;
-  /* align-items: center; */
-  flex-wrap: wrap;
-  background: yellow;
-
-
-}
+  align-items: center; 
+flex-wrap: wrap;
+  background: orange;
 
 `
-
 
 const RenterForm = ({getPokemon, onInputChange, searchPokemon, userInput}) => {
 
@@ -67,12 +63,12 @@ const RenterForm = ({getPokemon, onInputChange, searchPokemon, userInput}) => {
 
     const logOut2 = (e) => { 
       axiosWithAuth()
-      .get("/logout")
-      .then((res) => {
-        console.log(res.data)
-        })
-      history.push('/logout')
-      }
+        .get("/logout")
+        .then((res) => {
+          console.log(res.data)
+          })
+        history.push('/logout')
+    }
 
   // function handleClick() {
   //   history.push("/addProduct")
@@ -85,6 +81,7 @@ const RenterForm = ({getPokemon, onInputChange, searchPokemon, userInput}) => {
   return (
     
       <AppDiv>
+        
       <div className="App">
         <h1>Welcome Back Renter</h1>
         <form onSubmit={handleSubmit}>
@@ -102,9 +99,11 @@ const RenterForm = ({getPokemon, onInputChange, searchPokemon, userInput}) => {
           <button className="logout" onClick={logOut2}>Log Out</button>
         {/* </LogOutDiv> */}
       </div>  
-      <div className="items">
-        <OwnerList /> 
-      </div>
+      
+        <ItemsDiv>
+          <RenterList /> 
+        
+          </ItemsDiv>
       </AppDiv>
       
     

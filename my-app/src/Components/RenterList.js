@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import OwnerCard  from './OwnerCard';
 
+import RenterCard from './RenterCard'
 
 const OwnerList = ({pokemonImages}) => {
     console.log(pokemonImages)
     const renderedPokemon = pokemonImages.map((image) => {
         return (
             <div>
-                <OwnerCard key={image.id} name={image.name} url={image.url} />
+                
+                <RenterCard key={image.id} name={image.name} url={image.url} />
             </div>
         )
     })
@@ -26,4 +27,3 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {})(OwnerList);
-

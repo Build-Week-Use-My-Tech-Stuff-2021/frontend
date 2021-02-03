@@ -16,22 +16,21 @@ export const reducer = (state=initialState, action) => {
                 isFetching: true, 
                 error: '',
                 findPokemon: '',
-        })
+            })
         case(FETCH_IMAGE_SUCCESS):
             return({
                 ...state, 
                 error: '',
                 pokemonImages: action.payload,
-              
-        })
+            })
         case(FETCH_IMAGE_SEARCH):
-        return({
-            ...state, 
-            findPokemon: action.payload,
-            error: '',
-            pokemonImages: [...state.pokemonImages, action.payload],
-            userInput: '',
-    })
+            return({
+                ...state, 
+                findPokemon: action.payload,
+                error: '',
+                pokemonImages: [...state.pokemonImages, action.payload],
+                userInput: '',
+             })
         case(FETCH_IMAGE_FAIL):
             return({
                 ...state, 

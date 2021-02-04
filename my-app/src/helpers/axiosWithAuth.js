@@ -4,7 +4,7 @@ export const axiosWithAuth = () => {
     const token = localStorage.getItem('token');
 
     return axios.create({
-        baseURL: 'https://pokeapi.co/api/v2/pokemon',
+        baseURL: 'https://use-my-techstuff.herokuapp.com/',
         headers: {
             Authorization: token
         }

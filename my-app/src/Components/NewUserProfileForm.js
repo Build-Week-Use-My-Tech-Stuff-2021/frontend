@@ -190,5 +190,4 @@ export default function NewUserForm() {
 
 }
 
-}
 

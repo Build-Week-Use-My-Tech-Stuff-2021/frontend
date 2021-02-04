@@ -1,22 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import OwnerCard  from './OwnerCard';
+// import OwnerCard  from './OwnerCard';
 
 
 const OwnerList = ({pokemonImages}) => {
     console.log(pokemonImages)
-    const renderedPokemon = pokemonImages.map((image) => {
-        return (
-            <div>
-                <OwnerCard key={image.id} name={image.name} url={image.url} />
-            </div>
-        )
-    })
-        return(
-            <div>
-                {renderedPokemon ? renderedPokemon : ''}
-            </div>
-        )     
+    return(
+        <div>
+            <p>owernlist
+                
+            </p>
+        </div>
+    )
+    // const renderedPokemon = pokemonImages.map((image) => {
+    //     return (
+    //         <div>
+    //             <OwnerCard key={image.id} name={image.name} url={image.url} />
+    //         </div>
+    //     )
+    // })
+    //     return(
+    //         <div>
+    //             {renderedPokemon ? renderedPokemon : ''}
+    //         </div>
+    //     )     
 }
 
 const mapStateToProps = state => {

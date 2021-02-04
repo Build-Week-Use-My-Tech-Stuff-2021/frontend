@@ -1,17 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import PrivateRoute from './Components/PrivateRoute';
-import { ThemeProvider } from 'styled-components';
-import theme from './theme/index';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from "./Components/PrivateRoute";
+import { ThemeProvider } from "styled-components";
+import theme from "./theme/index";
 
-import LoginForm from './Components/LoginForm';
-import NewUserProfileForm from './Components/NewUserProfileForm';
-import OwnerForm from './Components/OwnerForm';
-import RenterForm from './Components/RenterForm';
-import AddTechProduct from './Components/AddTechProduct';
-import LogOut from './Components/LogOut';
-import RequestReceived from './Components/RequestReceived';
-import './App.css';
+import LoginForm from "./Components/LoginForm";
+import NewUserProfileForm from "./Components/NewUserProfileForm";
+import OwnerForm from "./Components/OwnerForm";
+import RenterForm from "./Components/RenterForm";
+import AddTechProduct from "./Components/AddTechProduct";
+import LogOut from "./Components/LogOut";
+import RequestReceived from "./Components/RequestReceived";
+import "./App.css";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
             <Route exact path="/renter" component={RenterForm} />
             <PrivateRoute exact path="/addProduct" component={AddTechProduct} />
             <PrivateRoute exact path="/logout" component={LogOut} />
-            <PrivateRoute exact path="/requestItem" component={RequestReceived} />
+            <Route exact path="/requestItem" component={RequestReceived} />
           </Switch>
         </div>
       </Router>
@@ -34,4 +34,3 @@ function App() {
 }
 
 export default App;
-

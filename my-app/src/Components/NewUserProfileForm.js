@@ -3,20 +3,20 @@ import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
 import axios from "axios";
+import styled from "styled-components";
+import banner from "../images/banner.jpg";
 
 const initialNewUserFormValues = {
-  firstName: "",
-  lastName: "",
   username: "",
   password: "",
   email: "",
+  birthday: "",
   userRole: "",
 };
 const initialNewUserFormErrors = {
-  firstName: "",
-  lastName: "",
   username: "",
   password: "",
+  birthday: "",
   email: "",
   userRole: "",
 };
@@ -58,10 +58,9 @@ export default function NewUserForm() {
 
   const newUserSubmit = () => {
     const newProfile = {
-      firstName: newUserFormValues.firstName.trim(),
-      lastName: newUserFormValues.lastName.trim(),
       username: newUserFormValues.username.trim(),
       password: newUserFormValues.password.trim(),
+      birthday: newUserFormValues.birthday.trim(),
       userRole: newUserFormValues.userRole,
     };
     postNewUserInfo(newProfile);
@@ -99,95 +98,135 @@ export default function NewUserForm() {
   }, [newUserFormValues]);
 
   return (
-    <form
-      className="new user form container"
-      disabled={newUserDisabled}
-      onSubmit={onSubmit}
-    >
-      <div className="new user form submit">
-        <h2>New Profile</h2>
-        <p>Please fill out the information below</p>
-
-        {/*DISABLE BUTTON */}
-        <button name="submit new user" disabled={newUserDisabled}>
-          Create Profile
-        </button>
+    <div>
+      <div name="banner">
+        <img src={banner} alt="circuit board"></img>
       </div>
+      <StyledNewUserForm className="newuser">
+        <form
+          className="new user form container"
+          disabled={newUserDisabled}
+          onSubmit={onSubmit}
+        >
+          <div className="new user form submit">
+            <h1>New Profile</h1>
+            <p>Please fill out the information below</p>
+          </div>
 
-      <div className="form inputs">
-        <h4>General information</h4>
+          <div className="form inputs">
+            <h2>General information</h2>
 
-        <label>
-          First Name
-          <input
-            value={newUserFormValues.firstName}
-            onChange={inputChange}
-            name="first name"
-            type="text"
-          />
-        </label>
+            <label>
+              Birthday
+              <input
+                value={newUserFormValues.birthday}
+                onChange={inputChange}
+                name="birthday"
+                type="text"
+              />
+            </label>
 
-        <label>
-          Last Name
-          <input
-            value={newUserFormValues.lastName}
-            onChange={inputChange}
-            name="last name"
-            type="text"
-          />
-        </label>
+            <label>
+              Role
+              <select
+                onChange={inputChange}
+                value={newUserFormValues.role}
+                name="role"
+              >
+                <option value="">- Select an option -</option>
+                <option value="owner">
+                  Owner - I want to make my equipment available to rent
+                </option>
+                <option value="renter">
+                  Renter - I want find available equipment to rent
+                </option>
+              </select>
+            </label>
+            <div className="breakdiv"></div>
 
-        <label>
-          Role
-          <select
-            onChange={inputChange}
-            value={newUserFormValues.role}
-            name="role"
-          >
-            <option value="">- Select an option -</option>
-            <option value="owner">
-              Owner - I want to make my equipment available to rent
-            </option>
-            <option value="renter">
-              Renter - I want find available equipment to rent
-            </option>
-          </select>
-        </label>
+            <label>
+              Username
+              <input
+                type="text"
+                name="username"
+                value={newUserFormValues.username}
+                onChange={inputChange}
+              />
+            </label>
 
-        <label>
-          Username
-          <input
-            type="text"
-            name="username"
-            value={newUserFormValues.username}
-            onChange={inputChange}
-          />
-        </label>
+            <label>
+              Password
+              <input
+                type="text"
+                name="password"
+                value={newUserFormValues.password}
+                onChange={inputChange}
+              />
+            </label>
 
-        <label>
-          Password
-          <input
-            type="text"
-            name="password"
-            value={newUserFormValues.password}
-            onChange={inputChange}
-          />
-        </label>
-
-        <label>
-          Email
-          <input
-            type="text"
-            name="email"
-            value={newUserFormValues.email}
-            onChange={inputChange}
-          />
-        </label>
-      </div>
-    </form>
+            <label>
+              Email
+              <input
+                type="text"
+                name="email"
+                value={newUserFormValues.email}
+                onChange={inputChange}
+              />
+            </label>
+            {/*DISABLE BUTTON */}
+            <button name="submit new user" disabled={newUserDisabled}>
+              Create Profile
+            </button>
+          </div>
+        </form>
+      </StyledNewUserForm>
+    </div>
   );
+
 
 
 }
 
 
+}
+
+
+const StyledNewUserForm = styled.div`
+  color: ${(pr) => pr.theme.primaryColor};
+  /* font-weight: ${(pr) => pr.theme.fontWeight}; */
+  font-style: ${(pr) => pr.theme.fontStyle};
+  font-size: ${(pr) => pr.theme.fontSize};
+  padding: ${(pr) => pr.theme.padding};
+  border: ${(pr) => pr.theme.border};
+  max-width: 100%;
+  margin: 2% auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+`;
+
+const StyledFirstHeading = styled.h1`
+  color: ${(pr) => pr.theme.primaryColor};
+  /* font-weight: ${(pr) => pr.theme.fontWeight}; */
+  font-style: ${(pr) => pr.theme.fontStyle};
+  font-size: ${(pr) => pr.theme.h1FontSize};
+  padding: ${(pr) => pr.theme.padding};
+  //border: ${(pr) => pr.theme.border};
+  max-width: 100%;
+  margin: 2% auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  text-align: center;
+  //background-color: ${(pr) => pr.theme.backgroundColor};
+`;
+
+const StyledSecondHeadings = styled.h2`
+  color: ${(pr) => pr.theme.secondaryColor};
+  margin: 2% auto;
+  text-align: center;
+`;
+
+const StyledBottomOfPage = styled.div`
+  background-color: ${(pr) => pr.theme.backgroundColor};
+`;

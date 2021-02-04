@@ -1,5 +1,5 @@
 // import axios from 'axios';
-import axios from 'axios';
+// import axios from 'axios';
 import { axiosWithAuth } from '../helpers/axiosWithAuth';
 
 export const FETCH_IMAGE_START = "FETCH_IMAGE_START";
@@ -11,10 +11,10 @@ export const ON_INPUT_CHANGE = "ON_INPUT_CHANGE";
 export const getPokemon = () => dispatch => {
     dispatch({type: FETCH_IMAGE_START})
     axiosWithAuth()
-        .get(`https://pokeapi.co/api/v2/pokemon?limit=100&offset=200`)
+        .get(`/api/techstuff/items`)
         .then((res)=> {
-            console.log(res)
-            dispatch({type: FETCH_IMAGE_SUCCESS, payload: res.data.results})
+            console.log(res.data)
+            // dispatch({type: FETCH_IMAGE_SUCCESS, payload: res.data.results})
         })
         .catch((err) => {
             dispatch({type: FETCH_IMAGE_FAIL, payload: err})
@@ -24,11 +24,11 @@ export const getPokemon = () => dispatch => {
 
 export const searchPokemon = (value) => dispatch => {
     dispatch({type: FETCH_IMAGE_START})
-    axios   
-        .get(`https://pokeapi.co/api/v2/pokemon/${value}`)
+    axiosWithAuth   
+        .get(`/api/techstuff/${value}`)
         .then((res)=> {
             console.log(res)
-            dispatch({type: FETCH_IMAGE_SEARCH, payload: res.data})
+            // dispatch({type: FETCH_IMAGE_SEARCH, payload: res.data})
         })
         .catch((err) => {
             dispatch({type: FETCH_IMAGE_FAIL, payload: err})

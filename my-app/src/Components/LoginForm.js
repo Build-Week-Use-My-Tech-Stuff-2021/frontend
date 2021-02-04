@@ -162,6 +162,7 @@ const StyledBottomOfPage = styled.div`
   background-color: ${(pr) => pr.theme.backgroundColor};
 `;
 
+
 const Banner = styled.div`
   max-height: 10%;
 `;

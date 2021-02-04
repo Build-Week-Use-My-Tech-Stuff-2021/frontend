@@ -182,7 +182,14 @@ export default function NewUserForm() {
       </StyledNewUserForm>
     </div>
   );
+
+
+
 }
+
+
+}
+
 
 const StyledNewUserForm = styled.div`
   color: ${(pr) => pr.theme.primaryColor};

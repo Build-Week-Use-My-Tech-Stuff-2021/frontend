@@ -1,5 +1,3 @@
-// import axios from 'axios';
-// import axios from 'axios';
 import { axiosWithAuth } from '../helpers/axiosWithAuth';
 
 export const FETCH_IMAGE_START = "FETCH_IMAGE_START";
@@ -13,22 +11,21 @@ export const getPokemon = () => dispatch => {
     axiosWithAuth()
         .get(`/api/techstuff/items`)
         .then((res)=> {
-            console.log(res.data)
-            // dispatch({type: FETCH_IMAGE_SUCCESS, payload: res.data.results})
+            console.log(res)
+            dispatch({type: FETCH_IMAGE_SUCCESS, payload: res.data})
         })
         .catch((err) => {
             dispatch({type: FETCH_IMAGE_FAIL, payload: err})
         })
-
 }
 
 export const searchPokemon = (value) => dispatch => {
     dispatch({type: FETCH_IMAGE_START})
-    axiosWithAuth   
+    axiosWithAuth()   
         .get(`/api/techstuff/${value}`)
         .then((res)=> {
             console.log(res)
-            // dispatch({type: FETCH_IMAGE_SEARCH, payload: res.data})
+            dispatch({type: FETCH_IMAGE_SEARCH, payload: res.data})
         })
         .catch((err) => {
             dispatch({type: FETCH_IMAGE_FAIL, payload: err})

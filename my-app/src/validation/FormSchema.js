@@ -1,17 +1,20 @@
 import * as yup from "yup";
 
 export default yup.object().shape({
-  firstName: yup
+  birthday: yup
   .string()
-  .required("first name is required"),
-  lastName: yup
-  .string()
-  .required("last name is required"),
+  .required("birthday is required"),
   username: yup
-  .string(),
+  .string()
+  .required('username is required'),
   password: yup
-  .string(),
-  size: yup
-    .string()
-    .oneOf(["I am an owner/seller", "I am a renter/shopper"], "selection is required"),
+  .string()
+  .required("password is required"),
+  email: yup
+  .string()
+  .email("must be an email")
+  .required("email is required"),
+  // role: yup
+  //   .string()
+    // .oneOf(["I am an owner/seller", "I am a renter/shopper"], "selection is required"),
 })

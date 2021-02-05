@@ -10,10 +10,5 @@ export default {
     mobile: "(max-width: 550px)",
     tablet: "(max-width: 800px)",
     desktop: "(max-width: 1400px)",
-  },
-  padding: {
-    small: "10px",
-    medium: "20px",
-  },
-  border: "1px solid black",
+  }
 };

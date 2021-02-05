@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import FormSchema from "../validation/FormSchema";
 import axios from "axios";
+import {axiosWithAuth} from '../helpers/axiosWithAuth'
 import styled from "styled-components";
 import banner from "../images/banner.jpg";
 
@@ -11,14 +12,14 @@ const initialNewUserFormValues = {
   password: "",
   email: "",
   birthday: "",
-  userRole: "",
+  // userRole: "",
 };
 const initialNewUserFormErrors = {
   username: "",
   password: "",
   birthday: "",
   email: "",
-  userRole: "",
+  // userRole: "",
 };
 
 const initialNewUserDisabled = true;
@@ -39,11 +40,40 @@ export default function NewUserForm() {
     history.push("/");
   };
 
+   //validation useEffect
+   const inputChange = (e) => {
+    // const { name, value } = event;
+    yup
+      .reach(FormSchema, e.target.name)
+      .validate(e.target.value)
+      .then(() => {
+        setNewUserFormErrors({
+          ...newUserFormErrors,
+          [e.target.name]: "",
+        });
+      })
+      .catch((error) => {
+        setNewUserFormErrors({
+          ...newUserFormErrors,
+          [e.target.name]: error.errors[0],
+        });
+      });
+
+    setNewUserFormValues({
+      ...newUserFormValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const postNewUserInfo = (newUserInfo) => {
-    axios
-      .post("", newUserInfo)
+    axiosWithAuth()
+      .post("https://use-my-techstuff.herokuapp.com/api/auth/register", newUserInfo)
       .then((res) => {
-        setNewUserFormValues(initialNewUserFormValues);
+        console.log(res
+          );
+        
+        history.push("/");
+        
       })
       .catch((error) => {
         console.log("there was an error ", error);
@@ -61,35 +91,12 @@ export default function NewUserForm() {
       username: newUserFormValues.username.trim(),
       password: newUserFormValues.password.trim(),
       birthday: newUserFormValues.birthday.trim(),
-      userRole: newUserFormValues.userRole,
+      email: newUserFormValues.email.trim(),
+      // userRole: newUserFormValues.userRole,
     };
     postNewUserInfo(newProfile);
   };
 
-  //validation useEffect
-  const inputChange = (event) => {
-    const { name, value } = event;
-    yup
-      .reach(FormSchema, name)
-      .validate(value)
-      .then(() => {
-        setNewUserFormErrors({
-          ...newUserFormErrors,
-          [name]: "",
-        });
-      })
-      .catch((error) => {
-        setNewUserFormErrors({
-          ...newUserFormErrors,
-          [name]: error.errors[0],
-        });
-      });
-
-    setNewUserFormValues({
-      ...newUserFormValues,
-      [name]: value,
-    });
-  };
 
   useEffect(() => {
     FormSchema.isValid(newUserFormValues).then((valid) => {
@@ -126,7 +133,7 @@ export default function NewUserForm() {
               />
             </label>
 
-            <label>
+            {/* <label>
               Role
               <select
                 onChange={inputChange}
@@ -141,7 +148,7 @@ export default function NewUserForm() {
                   Renter - I want find available equipment to rent
                 </option>
               </select>
-            </label>
+            </label> */}
             <div className="breakdiv"></div>
 
             <label>
@@ -183,12 +190,10 @@ export default function NewUserForm() {
     </div>
   );
 
-
-
 }
 
 
-}
+
 
 
 const StyledNewUserForm = styled.div`

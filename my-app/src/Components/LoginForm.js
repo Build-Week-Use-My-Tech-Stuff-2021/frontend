@@ -4,6 +4,7 @@ import FormSchema from "../validation/FormSchema";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import banner from "../images/banner.jpg";
+import axios from "axios";
 
 export default function LoginForm(props) {
   const { errors } = props;
@@ -15,9 +16,20 @@ export default function LoginForm(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    loginValues.role === "owner"
-      ? history.push("/owner")
-      : history.push("/renter");
+    axios
+      .post("https://use-my-techstuff.herokuapp.com/api/auth/login", loginValues)
+      .then((res)=> {
+        console.log(res)
+        history.push("/owner")
+      })
+      .catch((err)=> {
+        console.log(err)
+      })
+    // loginValues();
+    
+    // loginValues.role === "owner"
+    //   ? history.push("/owner")
+    //   : history.push("/renter");
   };
 
   const history = useHistory();
@@ -25,26 +37,26 @@ export default function LoginForm(props) {
     history.push("/createNewUser");
   };
 
-  const onChange = (name, value) => {
+  const onChange = (e) => {
     yup
-      .reach(FormSchema, name)
-      .validate(value)
+      .reach(FormSchema, e.target.name)
+      .validate(e.target.value)
       .then(() => {
         setFormErrors({
           ...formErrors,
-          [name]: "",
+          [e.target.name]: "",
         });
       })
       .catch((error) => {
         setFormErrors({
           ...formErrors,
-          [name]: error.errors[0],
+          [e.target.name]: error.errors[0],
         });
       });
 
     setLoginValues({
       ...loginValues,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -65,7 +77,8 @@ export default function LoginForm(props) {
         <StyledSecondHeadings>
           Returning? Please log-in below
         </StyledSecondHeadings>
-        <form className="login form container" onSubmit={onSubmit}>
+        <form className="login form container" onSubmit={onSubmit}> 
+  
           <label for="username" className="username input">
             Username
           </label>
@@ -86,7 +99,7 @@ export default function LoginForm(props) {
             onChange={onChange}
           />
 
-          <label for="role" className="user role">
+          {/* <label for="role" className="user role">
             Select role
           </label>
           <select name="role">
@@ -95,10 +108,11 @@ export default function LoginForm(props) {
               I want to make my equipment available to rent
             </option>
             <option value="renter">I want to find equipment to rent</option>
-          </select>
+          </select> */}
           <div className="login submit">
             {/*DISABLE BUTTON */}
-            <button name="submit new user" disabled={disabled}>
+            <button name="submit new user" >
+            {/* disabled={disabled} */}
               Log-in
             </button>
 
